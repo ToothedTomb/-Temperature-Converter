@@ -11,11 +11,11 @@ class TemperatureConverter(QMainWindow):
 
     def init_ui(self):
         self.setWindowTitle("Temperature Converter")
-
         # Heading
         self.heading_label = QLabel("Temperature Converter:", self)
+
         heading_font = QFont()
-        heading_font.setPointSize(15)  # Set the font size
+        heading_font.setPointSize(17)  # Set the font size
         heading_font.setBold(True)    # Make it bold
         heading_font.setUnderline(True)  # Underline the heading
         self.heading_label.setFont(heading_font)
@@ -26,9 +26,40 @@ class TemperatureConverter(QMainWindow):
         self.input_field = QLineEdit(self)
 
         self.conversion_type = QComboBox(self)
-        self.conversion_type.addItems(["Celsius to Fahrenheit", "Fahrenheit to Celsius"])
-
+        self.conversion_type.addItems([
+            "Celsius to Fahrenheit", 
+            "Fahrenheit to Celsius",
+            "Celsius to Kelvin",
+            "Kelvin to Celsius",
+            "Fahrenheit to Kelvin",
+            "Kelvin to Fahrenheit"])
+        self.conversion_type.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint)
+        self.conversion_type.setStyleSheet("""
+                QComboBox {
+                    combobox-popup: 0;
+                    color: black;
+                }
+                QComboBox QAbstractItemView {
+                    border: 1px solid gray;
+                    background-color: white;
+                    color: black;
+                }
+                QComboBox QAbstractItemView::item {
+                    color: black;
+                    background-color: white;
+                }
+                QComboBox QAbstractItemView::item:selected {
+                    color: black;
+                    background-color: lightgray;
+                }
+                QComboBox QAbstractItemView::item:hover {
+                    color: black;
+                    background-color: lightblue;
+                }
+            """)
         self.convert_button = QPushButton("Convert", self)
+        # Lets make the convert button blue
+        self.convert_button.setStyleSheet("background-color: lightblue;")
         self.result_label = QLabel("", self)
 
         # Layout
@@ -59,7 +90,7 @@ class TemperatureConverter(QMainWindow):
     def show_about_dialog(self):
         about_text = """
         <u><h1>Temperature Converter:</h1></u>
-        <h3>Version: 2</h3>
+        <h3>Version: 3</h3>
         <h3>Built with PyQt5</h3>
         <h3>Developer: Jonathan Steadman</h3>
         """
@@ -68,15 +99,29 @@ class TemperatureConverter(QMainWindow):
     def convert_temperature(self):
         try:
             temp = float(self.input_field.text())
-            if self.conversion_type.currentText() == "Celsius to Fahrenheit":
+            conversion = self.conversion_type.currentText()
+            
+            if conversion == "Celsius to Fahrenheit":
                 result = (temp * 9/5) + 32
                 self.result_label.setText(f"Result: {result:.2f} °F")
-            else:
+            elif conversion == "Fahrenheit to Celsius":
                 result = (temp - 32) * 5/9
                 self.result_label.setText(f"Result: {result:.2f} °C")
+            elif conversion == "Celsius to Kelvin":
+                result = temp + 273.15
+                self.result_label.setText(f"Result: {result:.2f} K")
+            elif conversion == "Kelvin to Celsius":
+                result = temp - 273.15
+                self.result_label.setText(f"Result: {result:.2f} °C")
+            elif conversion == "Fahrenheit to Kelvin":
+                result = (temp - 32) * 5/9 + 273.15
+                self.result_label.setText(f"Result: {result:.2f} K")
+            elif conversion == "Kelvin to Fahrenheit":
+                result = (temp - 273.15) * 9/5 + 32
+                self.result_label.setText(f"Result: {result:.2f} °F")
+                
         except ValueError:
-            self.result_label.setText("Error code 1: Enter a number.")
-
+            self.result_label.setText("⚠️ Must enter a valid number!")
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     converter = TemperatureConverter()
