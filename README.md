@@ -1,8 +1,10 @@
 # Temperature Converter:
 Simple temperature converter for Linux. 
-
+# Latest version:
+Version 3 is the latest version, you can download.
 # Screenshots:
-![Screenshot From 2024-12-29 15-40-47](https://github.com/user-attachments/assets/1ec159f5-f307-4bc5-a1b5-b1eb316b56ba)
+
+<img width="316" height="270" alt="Screenshot From 2025-11-26 21-40-50" src="https://github.com/user-attachments/assets/dd88a1ce-ca38-49f8-9b9f-718fd798d7b1" />
 
 # Created with?
 Python and PyQt5.
